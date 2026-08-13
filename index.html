@@ -159,6 +159,25 @@
     font-weight: bold;
   }
 
+  /* 迷因圖樣式控制 */
+  .meme-img {
+    width: 100%;
+    max-height: 200px;
+    object-fit: cover;
+    border-radius: 12px;
+    margin-bottom: 15px;
+  }
+
+  .result-meme {
+    width: 100%;
+    max-width: 320px;
+    height: 220px;
+    object-fit: cover;
+    border-radius: 16px;
+    margin: 15px auto;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  }
+
   .btn-main {
     width: 100%;
     background: #007aff;
@@ -178,10 +197,10 @@
   }
 
   .score-badge {
-    font-size: 48px;
+    font-size: 40px;
     font-weight: bold;
     color: #007aff;
-    margin: 15px 0;
+    margin: 10px 0;
   }
 </style>
 </head>
@@ -196,7 +215,7 @@
     <div class="intro-box">
       <strong>【遊戲介紹】</strong><br>
       當校園裡發生衝突時，對方的行為究竟是<b>「無心之失/意外」</b>，還是<b>「故意惡意」</b>呢？<br><br>
-      本遊戲共有 <b>15 個情境題</b>，請細心觀察對方的<b>表情、肢體語言與說話口氣</b>。<br>遊戲結束後會根據你的準確率給予<b>偵探等級評級</b>喔！
+      本遊戲共有 <b>15 個情境題</b>，請細心觀察對方的<b>表情、肢體語言與說話口氣</b>。<br>答題時還會有<b>驚喜迷因圖（Meme）</b>等著你！
     </div>
 
     <button class="btn-main" onclick="startGame()">🚀 開始挑戰</button>
@@ -222,6 +241,26 @@
 </div>
 
 <script>
+// 答對與答錯的迷因圖庫 (可替換圖片連結)
+const correctMemes = [
+  "https://images.unsplash.com/photo-1534180477871-5d65836a177b?auto=format&fit=crop&w=600&q=80", // 聰明的貓咪/狗
+  "https://images.unsplash.com/photo-1517849845537-4d257902454a?auto=format&fit=crop&w=600&q=80", // 戴墨鏡狗
+  "https://images.unsplash.com/photo-1543610892-0b1f7e6d8ac1?auto=format&fit=crop&w=600&q=80"  // 慶祝貓咪
+];
+
+const wrongMemes = [
+  "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=600&q=80", // 困惑貓咪
+  "https://images.unsplash.com/photo-1533738363-b7f9aef128ce?auto=format&fit=crop&w=600&q=80", // 戴眼鏡沉思貓
+  "https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?auto=format&fit=crop&w=600&q=80"  // 汗顏狗
+];
+
+// 評級迷因圖
+const resultMemes = {
+  master: "https://images.unsplash.com/photo-1517849845537-4d257902454a?auto=format&fit=crop&w=600&q=80", // 酷炫神偵探
+  intern: "https://images.unsplash.com/photo-1533738363-b7f9aef128ce?auto=format&fit=crop&w=600&q=80", // 認真觀察中
+  beginner: "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=600&q=80" // 滿頭問號貓
+};
+
 const questions = [
   {
     scenario: "情境 1：小明轉身拿書包時，手肘不小心撞倒了你桌上的水壺，水灑了一地。小明嚇了一跳，連忙說：「對不起！」",
@@ -515,16 +554,23 @@ function loadQuestion() {
 
 function selectOption(opt) {
   const feedback = document.getElementById("feedbackBox");
-  
+  let memeImgUrl = "";
+
   if (opt.correct) {
     score += 1;
     document.getElementById("scoreText").innerText = score;
     feedback.className = "feedback-box correct";
+    memeImgUrl = correctMemes[Math.floor(Math.random() * correctMemes.length)];
   } else {
     feedback.className = "feedback-box wrong";
+    memeImgUrl = wrongMemes[Math.floor(Math.random() * wrongMemes.length)];
   }
 
-  feedback.innerHTML = `<div>${opt.explanation}</div><div class="compare-text">${opt.compare}</div>`;
+  feedback.innerHTML = `
+    <img src="${memeImgUrl}" class="meme-img" alt="Meme">
+    <div>${opt.explanation}</div>
+    <div class="compare-text">${opt.compare}</div>
+  `;
   feedback.style.display = "block";
   
   const btns = document.querySelectorAll(".btn-option");
@@ -549,27 +595,32 @@ function showFinalResult() {
   let title = "";
   let badge = "";
   let desc = "";
+  let finalMeme = "";
 
   if (score >= 13) {
     badge = "🕵️‍♂️";
     title = "社交偵探大師";
     desc = "太厲害了！你擁有極敏銳的觀察力，能精準分辨對方的微表情、眼神與背後真實的意圖！";
+    finalMeme = resultMemes.master;
   } else if (score >= 8) {
     badge = "🔍";
     title = "實習偵探";
     desc = "做得不錯！你已經掌握了一半以上的判斷力。有時候我們容易誤會別人的動機，下次記得多觀察對方『事後有沒有道歉』或『有沒有嘲笑』喔！";
+    finalMeme = resultMemes.intern;
   } else {
     badge = "🛡️";
     title = "警覺小偵探";
     desc = "你的警覺性很高！但有時候容易把對方的『無心之失/意外』過度解讀為『故意攻擊』。當你感到生氣時，試著先讓情緒溫度計降溫，再觀察對方的眼神吧！";
+    finalMeme = resultMemes.beginner;
   }
 
   document.getElementById("gameArea").innerHTML = `
     <div style="text-align:center; padding: 10px 0;">
       <div style="font-size: 20px; font-weight: bold; color: #555;">你的總得分：${score} / 15</div>
       <div class="score-badge">${badge}</div>
-      <h3 style="color:#007aff; font-size:26px; margin: 10px 0;">稱號：${title}</h3>
-      <p style="color:#3a3a3c; font-size:18px; line-height:1.8; text-align: left; background: #f8f9fa; padding: 20px; border-radius: 16px; margin: 20px 0;">
+      <h3 style="color:#007aff; font-size:26px; margin: 5px 0;">稱號：${title}</h3>
+      <img src="${finalMeme}" class="result-meme" alt="Final Meme">
+      <p style="color:#3a3a3c; font-size:18px; line-height:1.8; text-align: left; background: #f8f9fa; padding: 20px; border-radius: 16px; margin: 15px 0;">
         ${desc}
       </p>
       <button class="btn-main" onclick="location.reload()">重新挑戰 ↺</button>
