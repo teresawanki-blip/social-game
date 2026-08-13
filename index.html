@@ -158,36 +158,34 @@
 </div>
 
 <script>
-   // 1. 迷因圖片資料庫 (採用開放外連與高度穩定的 CDN)
-const MEME_DATABASE = {
-    correct: [
-        "./images/correct1.jpg",
-        "./images/correct2.jpg",
-        "./images/correct3.jpg",
-        "./images/correct4.jpg",
-        "./images/correct5.jpg",
-        "./images/correct6.jpg",
-        "./images/correct7.jpg"
-    ],
-    wrong: [
-        "./images/wrong1.jpg",
-        "./images/wrong2.png",
-        "./images/wrong3.jpg",
-        "./images/wrong4.jpg",
-        "./images/wrong5.jpg",
-        "./images/wrong6.jpg",
-        "./images/wrong7.jpg"
-    ],
-    result: {
-        master: "./images/doge.jpg",
-        intern: "./images/success_kid.jpg",
-        novice: "./images/sad_pepe.jpg"
-    }
-};
-    
-let defaultMeme = "./images/c5.jpg";
+    // 完全對應你 GitHub images 資料夾內的實際檔名
+    const MEME_DATABASE = {
+        correct: [
+            "./images/correct1.jpg",
+            "./images/correct2.jpg",
+            "./images/correct3.jpg",
+            "./images/correct4.jpg",
+            "./images/correct5.jpg",
+            "./images/correct6.jpg",
+            "./images/correct7.jpg"
+        ],
+        wrong: [
+            "./images/wrong1.jpg",
+            "./images/wrong2.png", // 配合你上傳嘅 PNG 檔
+            "./images/wrong3.jpg",
+            "./images/wrong4.jpg",
+            "./images/wrong5.jpg",
+            "./images/wrong6.jpg",
+            "./images/wrong7.jpg"
+        ],
+        result: {
+            master: "./images/doge.jpg",
+            intern: "./images/success_kid.jpg",
+            novice: "./images/sad_pepe.jpg"
+        }
+    };
 
-    // 2. 測試題庫 (可自行替換或擴充)
+    // 測試題庫
     const QUESTIONS = [
         {
             question: "「HTTP 404」代表什麼意思？",
@@ -216,7 +214,7 @@ let defaultMeme = "./images/c5.jpg";
         }
     ];
 
-    // 3. 洗牌抽卡管理類別
+    // 洗牌抽卡管理類別
     class MemeManager {
         constructor(database) {
             this.db = database;
@@ -243,13 +241,12 @@ let defaultMeme = "./images/c5.jpg";
         }
     }
 
-    // 4. 遊戲控制邏輯
+    // 遊戲控制邏輯
     const memeManager = new MemeManager(MEME_DATABASE);
     let currentQuestionIndex = 0;
     let score = 0;
-    let defaultMeme = "https://i.imgur.com/3N4oXW2.jpg";
+    let defaultMeme = "./images/correct1.jpg";
 
-    // DOM 元素
     const quizScreen = document.getElementById('quiz-screen');
     const resultScreen = document.getElementById('result-screen');
     const memeImg = document.getElementById('meme-img');
@@ -294,7 +291,6 @@ let defaultMeme = "./images/c5.jpg";
         const q = QUESTIONS[currentQuestionIndex];
         const buttons = optionsContainer.querySelectorAll('.btn');
         
-        // 禁用所有按鈕
         buttons.forEach(btn => btn.disabled = true);
 
         if (selectedIndex === q.answer) {
@@ -339,7 +335,6 @@ let defaultMeme = "./images/c5.jpg";
 
     restartBtn.onclick = startGame;
 
-    // 初始化啟動遊戲
     startGame();
 </script>
 
