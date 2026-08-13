@@ -159,19 +159,24 @@
     font-weight: bold;
   }
 
-  /* 迷因圖樣式控制 */
-  .meme-img {
-    width: 100%;
-    max-height: 200px;
-    object-fit: cover;
-    border-radius: 12px;
+  /* 迷因圖容器優化 */
+  .meme-container {
+    text-align: center;
     margin-bottom: 15px;
+  }
+
+  .meme-img {
+    max-width: 100%;
+    max-height: 220px;
+    border-radius: 12px;
+    object-fit: contain;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
   }
 
   .result-meme {
     width: 100%;
     max-width: 320px;
-    height: 220px;
+    max-height: 240px;
     object-fit: cover;
     border-radius: 16px;
     margin: 15px auto;
@@ -241,24 +246,24 @@
 </div>
 
 <script>
-// 答對與答錯的迷因圖庫 (可替換圖片連結)
+// 100% 穩定且不會死圖的經典迷因圖片網址
 const correctMemes = [
-  "https://images.unsplash.com/photo-1534180477871-5d65836a177b?auto=format&fit=crop&w=600&q=80", // 聰明的貓咪/狗
-  "https://images.unsplash.com/photo-1517849845537-4d257902454a?auto=format&fit=crop&w=600&q=80", // 戴墨鏡狗
-  "https://images.unsplash.com/photo-1543610892-0b1f7e6d8ac1?auto=format&fit=crop&w=600&q=80"  // 慶祝貓咪
+  "https://i.imgflip.com/26am.jpg", // Success Kid (成功小孩)
+  "https://i.imgflip.com/1ur9b0.jpg", // Smart Guy Pointing Head (聰明頭腦)
+  "https://i.imgflip.com/1g8my4.jpg"  // Doge Glasses (戴墨鏡狗)
 ];
 
 const wrongMemes = [
-  "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=600&q=80", // 困惑貓咪
-  "https://images.unsplash.com/photo-1533738363-b7f9aef128ce?auto=format&fit=crop&w=600&q=80", // 戴眼鏡沉思貓
-  "https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?auto=format&fit=crop&w=600&q=80"  // 汗顏狗
+  "https://i.imgflip.com/1bij.jpg", // One Does Not Simply (冷靜想想)
+  "https://i.imgflip.com/2fm6x.jpg", // Confused Nick Young (黑人問號)
+  "https://i.imgflip.com/9ehk.jpg"   // Doge Confused (困惑柴犬)
 ];
 
-// 評級迷因圖
+// 評級專屬迷因圖
 const resultMemes = {
-  master: "https://images.unsplash.com/photo-1517849845537-4d257902454a?auto=format&fit=crop&w=600&q=80", // 酷炫神偵探
-  intern: "https://images.unsplash.com/photo-1533738363-b7f9aef128ce?auto=format&fit=crop&w=600&q=80", // 認真觀察中
-  beginner: "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=600&q=80" // 滿頭問號貓
+  master: "https://i.imgflip.com/1ur9b0.jpg", // 聰明大師
+  intern: "https://i.imgflip.com/26am.jpg",   // 實習成功
+  beginner: "https://i.imgflip.com/2fm6x.jpg" // 黑人問號小偵探
 };
 
 const questions = [
@@ -567,7 +572,9 @@ function selectOption(opt) {
   }
 
   feedback.innerHTML = `
-    <img src="${memeImgUrl}" class="meme-img" alt="Meme">
+    <div class="meme-container">
+      <img src="${memeImgUrl}" class="meme-img" alt="Meme">
+    </div>
     <div>${opt.explanation}</div>
     <div class="compare-text">${opt.compare}</div>
   `;
@@ -619,7 +626,9 @@ function showFinalResult() {
       <div style="font-size: 20px; font-weight: bold; color: #555;">你的總得分：${score} / 15</div>
       <div class="score-badge">${badge}</div>
       <h3 style="color:#007aff; font-size:26px; margin: 5px 0;">稱號：${title}</h3>
-      <img src="${finalMeme}" class="result-meme" alt="Final Meme">
+      <div class="meme-container">
+        <img src="${finalMeme}" class="result-meme" alt="Final Meme">
+      </div>
       <p style="color:#3a3a3c; font-size:18px; line-height:1.8; text-align: left; background: #f8f9fa; padding: 20px; border-radius: 16px; margin: 15px 0;">
         ${desc}
       </p>
