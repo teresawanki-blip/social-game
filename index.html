@@ -5,119 +5,172 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>校園偵探：意外還是惡意？</title>
 <style>
-  body {
-    font-family: "PingFang TC", "Microsoft JhengHei", sans-serif;
-    background-color: #f0f2f5;
+  /* 讓全頁面內容上下左右完全居中 */
+  html, body {
+    height: 100%;
     margin: 0;
-    padding: 20px;
+    padding: 0;
+    background-color: #f0f2f5;
+    font-family: "PingFang TC", "Microsoft JhengHei", sans-serif;
+  }
+  
+  body {
     display: flex;
     justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    padding: 20px;
   }
+
   .card {
     background: white;
     width: 100%;
-    max-width: 600px;
-    border-radius: 20px;
-    padding: 25px;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+    max-width: 650px;
+    border-radius: 24px;
+    padding: 35px 30px;
+    box-shadow: 0 12px 32px rgba(0,0,0,0.12);
+    box-sizing: border-box;
   }
+
+  /* 字體放大設置 */
   .title {
     text-align: center;
     color: #1d1d1f;
-    font-size: 22px;
-    margin-bottom: 5px;
+    font-size: 26px;
+    font-weight: bold;
+    margin-bottom: 8px;
   }
+
   .subtitle {
     text-align: center;
     color: #6e6e73;
-    font-size: 14px;
-    margin-bottom: 20px;
+    font-size: 16px;
+    margin-bottom: 25px;
   }
+
+  /* 起始畫面專屬樣式 */
+  .intro-box {
+    text-align: center;
+    line-height: 1.8;
+    font-size: 18px;
+    color: #3a3a3c;
+    margin: 20px 0 30px 0;
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 16px;
+    border: 2px dashed #007aff;
+  }
+
   .progress-info {
     display: flex;
     justify-content: space-between;
-    font-size: 13px;
+    font-size: 15px;
+    font-weight: bold;
     color: #8e8e93;
-    margin-bottom: 6px;
+    margin-bottom: 8px;
   }
+
   .progress {
     background: #e5e5ea;
-    height: 8px;
-    border-radius: 4px;
+    height: 10px;
+    border-radius: 5px;
     overflow: hidden;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
   }
+
   .progress-bar {
     background: #34c759;
     height: 100%;
     width: 0%;
     transition: width 0.3s;
   }
+
   .scenario-box {
-    background: #f8f9fa;
-    border-left: 5px solid #007aff;
-    padding: 15px;
-    border-radius: 8px;
-    font-size: 16px;
-    line-height: 1.5;
-    color: #2c3e50;
-    margin-bottom: 20px;
+    background: #f0f8ff;
+    border-left: 6px solid #007aff;
+    padding: 20px;
+    border-radius: 12px;
+    font-size: 20px; /* 大字體情境 */
+    line-height: 1.6;
+    color: #1c1c1e;
+    margin-bottom: 25px;
+    font-weight: 500;
   }
+
+  .question-prompt {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 12px;
+    color: #444;
+  }
+
   .options {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 15px;
   }
+
   .btn-option {
     background: #ffffff;
-    border: 2px solid #e5e5ea;
-    border-radius: 12px;
-    padding: 14px 16px;
-    font-size: 15px;
+    border: 2.5px solid #e5e5ea;
+    border-radius: 16px;
+    padding: 18px 20px;
+    font-size: 18px; /* 大字體選項 */
+    line-height: 1.5;
     text-align: left;
     cursor: pointer;
     transition: all 0.2s;
     color: #1c1c1e;
+    font-weight: 500;
   }
+
   .btn-option:hover {
     border-color: #007aff;
-    background: #f0f8ff;
+    background: #f4f9ff;
   }
+
   .btn-option.disabled {
     cursor: default;
     opacity: 0.7;
   }
+
   .feedback-box {
-    margin-top: 20px;
-    padding: 15px;
-    border-radius: 12px;
+    margin-top: 25px;
+    padding: 20px;
+    border-radius: 16px;
     display: none;
-    line-height: 1.5;
+    font-size: 18px; /* 大字體反饋 */
+    line-height: 1.6;
+    font-weight: 500;
   }
+
   .feedback-box.correct {
     background: #e4f9ec;
-    border: 1px solid #34c759;
+    border: 2px solid #34c759;
     color: #137333;
   }
+
   .feedback-box.wrong {
     background: #fde8e8;
-    border: 1px solid #ff3b30;
+    border: 2px solid #ff3b30;
     color: #c5221f;
   }
-  .btn-next {
-    margin-top: 20px;
+
+  .btn-main {
     width: 100%;
     background: #007aff;
     color: white;
     border: none;
-    padding: 14px;
-    border-radius: 10px;
-    font-size: 16px;
+    padding: 16px;
+    border-radius: 14px;
+    font-size: 20px;
     font-weight: bold;
     cursor: pointer;
-    display: none;
+    transition: background 0.2s;
+    margin-top: 20px;
   }
-  .btn-next:hover {
+
+  .btn-main:hover {
     background: #0056b3;
   }
 </style>
@@ -125,21 +178,36 @@
 <body>
 
 <div class="card">
-  <div class="title">🕵️‍♂️ 校園偵探：猜猜別人在想什麼？</div>
-  <div class="subtitle">學習區分「意外／無心之失」與「惡意行為」</div>
-  
-  <div class="progress-info">
-    <span>進度</span>
-    <span id="progressText">1 / 15</span>
-  </div>
-  <div class="progress"><div class="progress-bar" id="progressBar"></div></div>
+  <!-- 1. 起始畫面 -->
+  <div id="startScreen">
+    <div class="title">🕵️‍♂️ 校園偵探：意外還是惡意？</div>
+    <div class="subtitle">社交思維與同理心訓練遊戲</div>
+    
+    <div class="intro-box">
+      <strong>【遊戲介紹】</strong><br>
+      當校園裡發生衝突時，對方的行為究竟是<b>「無心之失/意外」</b>，還是<b>「故意惡意」</b>呢？<br><br>
+      這款遊戲包含 <b>15 個校園情境</b>，請扮演社交偵探，觀察對方的<b>微表情、肢體動作與事後反應</b>，猜猜看別人在想什麼吧！
+    </div>
 
-  <div id="gameArea">
-    <div class="scenario-box" id="scenarioText">載入中...</div>
-    <div style="font-weight: bold; margin-bottom: 10px; color: #555;">猜猜看，對方當時在大腦裡想什麼？</div>
-    <div class="options" id="optionsContainer"></div>
-    <div class="feedback-box" id="feedbackBox"></div>
-    <button class="btn-next" id="nextBtn" onclick="nextQuestion()">確認並前往下一題 ➔</button>
+    <button class="btn-main" onclick="startGame()">🚀 開始挑戰</button>
+  </div>
+
+  <!-- 2. 遊戲進行畫面 -->
+  <div id="gameScreen" style="display: none;">
+    <div class="title" style="font-size: 22px;">🕵️‍♂️ 校園偵探關卡</div>
+    <div class="progress-info">
+      <span>挑戰進度</span>
+      <span id="progressText">1 / 15</span>
+    </div>
+    <div class="progress"><div class="progress-bar" id="progressBar"></div></div>
+
+    <div id="gameArea">
+      <div class="scenario-box" id="scenarioText">載入中...</div>
+      <div class="question-prompt">猜猜看，對方當時在大腦裡想什麼？</div>
+      <div class="options" id="optionsContainer"></div>
+      <div class="feedback-box" id="feedbackBox"></div>
+      <button class="btn-main" id="nextBtn" style="display: none;" onclick="nextQuestion()">確認並前往下一題 ➔</button>
+    </div>
   </div>
 </div>
 
@@ -254,6 +322,12 @@ const questions = [
 
 let currentIndex = 0;
 
+function startGame() {
+  document.getElementById("startScreen").style.display = "none";
+  document.getElementById("gameScreen").style.display = "block";
+  loadQuestion();
+}
+
 function loadQuestion() {
   const q = questions[currentIndex];
   document.getElementById("scenarioText").innerText = q.scenario;
@@ -281,14 +355,12 @@ function selectOption(opt) {
   feedback.className = "feedback-box " + (opt.correct ? "correct" : "wrong");
   feedback.style.display = "block";
   
-  // 鎖定按鈕，防止重複點擊
   const btns = document.querySelectorAll(".btn-option");
   btns.forEach(b => {
     b.classList.add("disabled");
     b.style.pointerEvents = "none";
   });
   
-  // 顯示下一頁按鈕
   document.getElementById("nextBtn").style.display = "block";
 }
 
@@ -298,16 +370,14 @@ function nextQuestion() {
     loadQuestion();
   } else {
     document.getElementById("gameArea").innerHTML = `
-      <div style="text-align:center; padding: 20px;">
-        <h3 style="color:#34c759; font-size:24px;">🎉 全數完成！你成為了「社交偵探大師」！</h3>
-        <p style="color:#555; line-height:1.6;">你順利完成了全部 15 個校園情境挑戰！<br>記住：遇到衝突時，先冷靜觀察對方的<b>表情、眼神與事後反應</b>，區分「意外」與「故意」，大腦就不容易失控爆發喔！</p>
-        <button class="btn-next" style="display:block; margin-top:20px;" onclick="location.reload()">重新挑戰 ↺</button>
+      <div style="text-align:center; padding: 20px 0;">
+        <h3 style="color:#34c759; font-size:26px; margin-bottom:15px;">🎉 全數完成！你成為了「社交偵探大師」！</h3>
+        <p style="color:#444; font-size:18px; line-height:1.8;">你順利完成了全部 15 個校園情境挑戰！<br>記住：遇到衝突時，先冷靜觀察對方的<b>表情、眼神與事後反應</b>，區分「意外」與「故意」，大腦就不容易失控爆發喔！</p>
+        <button class="btn-main" style="margin-top:20px;" onclick="location.reload()">重新挑戰 ↺</button>
       </div>
     `;
   }
 }
-
-loadQuestion();
 </script>
 
 </body>
