@@ -160,34 +160,31 @@
 <script>
    // 1. 迷因圖片資料庫 (採用開放外連與高度穩定的 CDN)
     const MEME_DATABASE = {
-        correct: [
-            "https://upload.wikimedia.org/wikipedia/en/f/f1/SuccessKid.jpg", // Success Kid
-            "https://i.imgur.com/8Qp49X0.jpg", // Roll Safe
-            "https://upload.wikimedia.org/wikipedia/en/9/9a/Trollface_non-free.png", // Trollface
-            "https://i.imgur.com/Z4c93jA.jpg", // Disaster Girl
-            "https://i.imgur.com/3N4oXW2.jpg", // All The Things
-            "https://i.imgur.com/uR2I92l.png", // Me Gusta
-            "https://i.imgur.com/tH31sL9.jpg", // Hamster Heart
-            "https://i.imgur.com/yD66sIq.jpg", // Meerkat
-            "https://i.imgur.com/mO1S29m.jpg"  // Pixar Lizard
-        ],
-        wrong: [
-            "https://i.imgur.com/97y4C8W.jpg", // Crying Cat
-            "https://upload.wikimedia.org/wikipedia/en/1/15/Pepe_the_Frog_filename.jpg", // Sad Pepe
-            "https://i.imgur.com/L7E1a3H.jpg", // Shrek Gag
-            "https://i.imgur.com/S9sJ1wQ.jpg", // Surprised Monkey
-            "https://i.imgur.com/kH05jA1.jpg", // Shy Duck
-            "https://i.imgur.com/FjK11mG.jpg", // Monkey Thinking
-            "https://i.imgur.com/9C3XmP4.jpg", // Monkey Puppet
-            "https://i.imgur.com/89kR7jQ.jpg", // Yao Ming
-            "https://upload.wikimedia.org/wikipedia/commons/1/15/Cat_Grumpy_Cat_at_SXSW.jpg"  // Grumpy Cat
-        ],
-        result: {
-            master: "https://upload.wikimedia.org/wikipedia/en/5/5f/Original_Doge_meme_photograph.jpg", // Doge
-            intern: "https://upload.wikimedia.org/wikipedia/en/f/f1/SuccessKid.jpg", // Success Kid
-            novice: "https://upload.wikimedia.org/wikipedia/en/1/15/Pepe_the_Frog_filename.jpg" // Sad Pepe
-        }
-    };
+        const MEME_DATABASE = {
+    correct: [
+        "./images/correct1.jpg",
+        "./images/correct2.jpg",
+        "./images/correct3.jpg",
+        "./images/correct4.jpg",
+        "./images/correct5.jpg",
+        "./images/correct6.jpg",
+        "./images/correct7.jpg"
+    ],
+    wrong: [
+        "./images/wrong1.jpg",
+        "./images/wrong2.png",
+        "./images/wrong3.jpg",
+        "./images/wrong4.jpg",
+        "./images/wrong5.jpg",
+        "./images/wrong6.jpg",
+        "./images/wrong7.jpg"
+    ],
+    result: {
+        master: "./images/doge.jpg",
+        intern: "./images/success_kid.jpg",
+        novice: "./images/sad_pepe.jpg"
+    }
+};
 
     // 2. 測試題庫 (可自行替換或擴充)
     const QUESTIONS = [
