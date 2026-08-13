@@ -158,34 +158,34 @@
 </div>
 
 <script>
-    // 1. 迷因圖片資料庫 (高穩定度 CDN)
+   // 1. 迷因圖片資料庫 (採用開放外連與高度穩定的 CDN)
     const MEME_DATABASE = {
         correct: [
-            "https://i.kym-cdn.com/entries/icons/original/000/000/018/310a200-1199308151.jpg", // Success Kid
-            "https://i.kym-cdn.com/entries/icons/original/000/022/138/highrollsafe.jpg", // Roll Safe
-            "https://i.kym-cdn.com/entries/icons/original/000/000/015/trollface.jpg", // Trollface
-            "https://i.kym-cdn.com/entries/icons/original/000/000/005/disastergirl.jpg", // Disaster Girl
-            "https://i.kym-cdn.com/entries/icons/original/000/006/075/allthethings.jpg", // All The Things
-            "https://i.kym-cdn.com/entries/icons/original/000/002/252/me-gusta.jpg", // Me Gusta
-            "https://i.kym-cdn.com/photos/images/newsfeed/002/053/065/f77.jpg", // Hamster Heart
-            "https://i.kym-cdn.com/photos/images/newsfeed/001/493/118/88f.jpg", // Meerkat
-            "https://i.kym-cdn.com/photos/images/newsfeed/002/153/834/621.jpg"  // Pixar Lizard
+            "https://upload.wikimedia.org/wikipedia/en/f/f1/SuccessKid.jpg", // Success Kid
+            "https://i.imgur.com/8Qp49X0.jpg", // Roll Safe
+            "https://upload.wikimedia.org/wikipedia/en/9/9a/Trollface_non-free.png", // Trollface
+            "https://i.imgur.com/Z4c93jA.jpg", // Disaster Girl
+            "https://i.imgur.com/3N4oXW2.jpg", // All The Things
+            "https://i.imgur.com/uR2I92l.png", // Me Gusta
+            "https://i.imgur.com/tH31sL9.jpg", // Hamster Heart
+            "https://i.imgur.com/yD66sIq.jpg", // Meerkat
+            "https://i.imgur.com/mO1S29m.jpg"  // Pixar Lizard
         ],
         wrong: [
-            "https://i.kym-cdn.com/entries/icons/original/000/028/332/cover2.jpg", // Crying Cat
-            "https://i.kym-cdn.com/entries/icons/original/000/000/096/Pepe_the_Frog.jpg", // Sad Pepe
-            "https://i.kym-cdn.com/photos/images/newsfeed/002/653/358/639.jpg", // Shrek Gag
-            "https://i.kym-cdn.com/photos/images/newsfeed/001/184/061/78f.jpg", // Surprised Monkey
-            "https://i.kym-cdn.com/photos/images/newsfeed/002/031/226/724.png", // Shy Duck
-            "https://i.kym-cdn.com/photos/images/newsfeed/002/083/108/6cc.jpg", // Monkey Thinking
-            "https://i.kym-cdn.com/photos/images/newsfeed/001/498/842/81d.jpg", // Monkey Puppet
-            "https://i.kym-cdn.com/entries/icons/original/000/000/218/bitch-please.jpg", // Yao Ming
-            "https://i.kym-cdn.com/entries/icons/original/000/011/365/Grumpy_Cat.jpg"  // Grumpy Cat
+            "https://i.imgur.com/97y4C8W.jpg", // Crying Cat
+            "https://upload.wikimedia.org/wikipedia/en/1/15/Pepe_the_Frog_filename.jpg", // Sad Pepe
+            "https://i.imgur.com/L7E1a3H.jpg", // Shrek Gag
+            "https://i.imgur.com/S9sJ1wQ.jpg", // Surprised Monkey
+            "https://i.imgur.com/kH05jA1.jpg", // Shy Duck
+            "https://i.imgur.com/FjK11mG.jpg", // Monkey Thinking
+            "https://i.imgur.com/9C3XmP4.jpg", // Monkey Puppet
+            "https://i.imgur.com/89kR7jQ.jpg", // Yao Ming
+            "https://upload.wikimedia.org/wikipedia/commons/1/15/Cat_Grumpy_Cat_at_SXSW.jpg"  // Grumpy Cat
         ],
         result: {
-            master: "https://i.kym-cdn.com/entries/icons/original/000/013/564/doge.jpg", // Doge
-            intern: "https://i.kym-cdn.com/entries/icons/original/000/000/018/310a200-1199308151.jpg", // Success Kid
-            novice: "https://i.kym-cdn.com/entries/icons/original/000/000/096/Pepe_the_Frog.jpg" // Sad Pepe
+            master: "https://upload.wikimedia.org/wikipedia/en/5/5f/Original_Doge_meme_photograph.jpg", // Doge
+            intern: "https://upload.wikimedia.org/wikipedia/en/f/f1/SuccessKid.jpg", // Success Kid
+            novice: "https://upload.wikimedia.org/wikipedia/en/1/15/Pepe_the_Frog_filename.jpg" // Sad Pepe
         }
     };
 
@@ -249,7 +249,7 @@
     const memeManager = new MemeManager(MEME_DATABASE);
     let currentQuestionIndex = 0;
     let score = 0;
-    let defaultMeme = "https://i.kym-cdn.com/entries/icons/original/000/006/075/allthethings.jpg";
+    let defaultMeme = "https://i.imgur.com/3N4oXW2.jpg";
 
     // DOM 元素
     const quizScreen = document.getElementById('quiz-screen');
