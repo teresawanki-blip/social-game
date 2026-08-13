@@ -159,7 +159,6 @@
     font-weight: bold;
   }
 
-  /* 迷因圖容器優化 */
   .meme-container {
     text-align: center;
     margin-bottom: 15px;
@@ -220,7 +219,7 @@
     <div class="intro-box">
       <strong>【遊戲介紹】</strong><br>
       當校園裡發生衝突時，對方的行為究竟是<b>「無心之失/意外」</b>，還是<b>「故意惡意」</b>呢？<br><br>
-      本遊戲共有 <b>15 個情境題</b>，請細心觀察對方的<b>表情、肢體語言與說話口氣</b>。<br>答題時還會有<b>驚喜迷因圖（Meme）</b>等著你！
+      本遊戲共有 <b>15 個情境題</b>，請細心觀察對方的<b>表情、肢體語言與說話口氣</b>。<br>答題時還會有<b>經典人物迷因圖（Meme）</b>等著你！
     </div>
 
     <button class="btn-main" onclick="startGame()">🚀 開始挑戰</button>
@@ -246,24 +245,26 @@
 </div>
 
 <script>
-// 100% 穩定且不會死圖的經典迷因圖片網址
+// 全人物經典迷因圖庫 (無貓狗)
 const correctMemes = [
-  "https://i.imgflip.com/26am.jpg", // Success Kid (成功小孩)
-  "https://i.imgflip.com/1ur9b0.jpg", // Smart Guy Pointing Head (聰明頭腦)
-  "https://i.imgflip.com/1g8my4.jpg"  // Doge Glasses (戴墨鏡狗)
+  "https://i.imgflip.com/26am.jpg",   // Success Kid (握拳成功小孩)
+  "https://i.imgflip.com/1ur9b0.jpg", // Roll Safe (指著頭腦的聰明哥)
+  "https://i.imgflip.com/1g8my4.jpg", // Leonardo DiCaprio (經典乾杯)
+  "https://i.imgflip.com/1bhk.jpg"    // Drake Hotline Bling (讚賞 Drake)
 ];
 
 const wrongMemes = [
-  "https://i.imgflip.com/1bij.jpg", // One Does Not Simply (冷靜想想)
   "https://i.imgflip.com/2fm6x.jpg", // Confused Nick Young (黑人問號)
-  "https://i.imgflip.com/9ehk.jpg"   // Doge Confused (困惑柴犬)
+  "https://i.imgflip.com/1bij.jpg",  // Boromir / One Does Not Simply (冷靜想想)
+  "https://i.imgflip.com/23ls.jpg",   // Disaster Girl (災難女孩)
+  "https://i.imgflip.com/1tl71a.jpg" // Distracted Boyfriend (分心男友)
 ];
 
-// 評級專屬迷因圖
+// 評級專屬人物迷因圖
 const resultMemes = {
-  master: "https://i.imgflip.com/1ur9b0.jpg", // 聰明大師
-  intern: "https://i.imgflip.com/26am.jpg",   // 實習成功
-  beginner: "https://i.imgflip.com/2fm6x.jpg" // 黑人問號小偵探
+  master: "https://i.imgflip.com/1ur9b0.jpg",   // 聰明大師 (Roll Safe)
+  intern: "https://i.imgflip.com/26am.jpg",     // 成功實習 (Success Kid)
+  beginner: "https://i.imgflip.com/2fm6x.jpg"   // 困惑小偵探 (Nick Young)
 };
 
 const questions = [
