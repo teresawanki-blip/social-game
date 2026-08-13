@@ -219,7 +219,7 @@
     <div class="intro-box">
       <strong>【遊戲介紹】</strong><br>
       當校園裡發生衝突時，對方的行為究竟是<b>「無心之失/意外」</b>，還是<b>「故意惡意」</b>呢？<br><br>
-      本遊戲共有 <b>15 個情境題</b>，請細心觀察對方的<b>表情、肢體語言與說話口氣</b>。<br>答題時還會有<b>經典人物迷因圖（Meme）</b>等著你！
+      本遊戲共有 <b>15 個情境題</b>，請細心觀察對方的<b>表情、肢體語言與說話口氣</b>。<br>答題時還會有<b>豐富的人物迷因圖（Meme）</b>等著你！
     </div>
 
     <button class="btn-main" onclick="startGame()">🚀 開始挑戰</button>
@@ -245,27 +245,55 @@
 </div>
 
 <script>
-// 全人物經典迷因圖庫 (無貓狗)
-const correctMemes = [
-  "https://i.imgflip.com/26am.jpg",   // Success Kid (握拳成功小孩)
-  "https://i.imgflip.com/1ur9b0.jpg", // Roll Safe (指著頭腦的聰明哥)
-  "https://i.imgflip.com/1g8my4.jpg", // Leonardo DiCaprio (經典乾杯)
-  "https://i.imgflip.com/1bhk.jpg"    // Drake Hotline Bling (讚賞 Drake)
+// 擴充基礎人物迷因圖庫 (全人物、無貓狗)
+const rawCorrectMemes = [
+  "https://i.imgflip.com/26am.jpg",   // Success Kid
+  "https://i.imgflip.com/1ur9b0.jpg", // Roll Safe
+  "https://i.imgflip.com/1g8my4.jpg", // Leonardo DiCaprio
+  "https://i.imgflip.com/1bhk.jpg",   // Drake Hotline Bling
+  "https://i.imgflip.com/261o3j.jpg", // Modern Problems
+  "https://i.imgflip.com/1otk96.jpg", // Change My Mind
+  "https://i.imgflip.com/30b1gx.jpg", // Bernie Sanders
+  "https://i.imgflip.com/1ih10o.jpg"  // Evil Kermit / Thinking
 ];
 
-const wrongMemes = [
-  "https://i.imgflip.com/2fm6x.jpg", // Confused Nick Young (黑人問號)
-  "https://i.imgflip.com/1bij.jpg",  // Boromir / One Does Not Simply (冷靜想想)
-  "https://i.imgflip.com/23ls.jpg",   // Disaster Girl (災難女孩)
-  "https://i.imgflip.com/1tl71a.jpg" // Distracted Boyfriend (分心男友)
+const rawWrongMemes = [
+  "https://i.imgflip.com/2fm6x.jpg", // Confused Nick Young
+  "https://i.imgflip.com/1bij.jpg",  // Boromir
+  "https://i.imgflip.com/23ls.jpg",   // Disaster Girl
+  "https://i.imgflip.com/1tl71a.jpg", // Distracted Boyfriend
+  "https://i.imgflip.com/9ehk.jpg",   // Facepalm
+  "https://i.imgflip.com/1w7y0p.jpg", // Woman Yelling at Cat (Woman side)
+  "https://i.imgflip.com/1h7in3.jpg", // Side Eye Chloe
+  "https://i.imgflip.com/1c1uej.jpg"  // Math Lady / Confused Lady
 ];
 
 // 評級專屬人物迷因圖
 const resultMemes = {
-  master: "https://i.imgflip.com/1ur9b0.jpg",   // 聰明大師 (Roll Safe)
-  intern: "https://i.imgflip.com/26am.jpg",     // 成功實習 (Success Kid)
-  beginner: "https://i.imgflip.com/2fm6x.jpg"   // 困惑小偵探 (Nick Young)
+  master: "https://i.imgflip.com/1ur9b0.jpg",
+  intern: "https://i.imgflip.com/26am.jpg",
+  beginner: "https://i.imgflip.com/2fm6x.jpg"
 };
+
+// 局內動態牌組 (單局每張圖最多只出現 2 次)
+let currentCorrectDeck = [];
+let currentWrongDeck = [];
+
+// 洗牌演算法
+function shuffle(array) {
+  let arr = [...array];
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+// 初始化單局迷因牌組 (每張複製2次並打亂)
+function initMemeDecks() {
+  currentCorrectDeck = shuffle([...rawCorrectMemes, ...rawCorrectMemes]);
+  currentWrongDeck = shuffle([...rawWrongMemes, ...rawWrongMemes]);
+}
 
 const questions = [
   {
@@ -533,6 +561,7 @@ function startGame() {
   document.getElementById("gameScreen").style.display = "block";
   score = 0;
   currentIndex = 0;
+  initMemeDecks(); // 初始化並打亂單局迷因圖庫
   loadQuestion();
 }
 
@@ -566,10 +595,12 @@ function selectOption(opt) {
     score += 1;
     document.getElementById("scoreText").innerText = score;
     feedback.className = "feedback-box correct";
-    memeImgUrl = correctMemes[Math.floor(Math.random() * correctMemes.length)];
+    // 從洗牌好的正確牌組中彈出一張（保證單局最多重複 2 次）
+    memeImgUrl = currentCorrectDeck.pop();
   } else {
     feedback.className = "feedback-box wrong";
-    memeImgUrl = wrongMemes[Math.floor(Math.random() * wrongMemes.length)];
+    // 從洗牌好的錯誤牌組中彈出一張（保證單局最多重複 2 次）
+    memeImgUrl = currentWrongDeck.pop();
   }
 
   feedback.innerHTML = `
