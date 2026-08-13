@@ -159,29 +159,6 @@
     font-weight: bold;
   }
 
-  .meme-container {
-    text-align: center;
-    margin-bottom: 15px;
-  }
-
-  .meme-img {
-    max-width: 100%;
-    max-height: 220px;
-    border-radius: 12px;
-    object-fit: contain;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  }
-
-  .result-meme {
-    width: 100%;
-    max-width: 320px;
-    max-height: 240px;
-    object-fit: cover;
-    border-radius: 16px;
-    margin: 15px auto;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-  }
-
   .btn-main {
     width: 100%;
     background: #007aff;
@@ -201,10 +178,10 @@
   }
 
   .score-badge {
-    font-size: 40px;
+    font-size: 48px;
     font-weight: bold;
     color: #007aff;
-    margin: 10px 0;
+    margin: 15px 0;
   }
 </style>
 </head>
@@ -219,7 +196,7 @@
     <div class="intro-box">
       <strong>【遊戲介紹】</strong><br>
       當校園裡發生衝突時，對方的行為究竟是<b>「無心之失/意外」</b>，還是<b>「故意惡意」</b>呢？<br><br>
-      本遊戲共有 <b>15 個情境題</b>，請細心觀察對方的<b>表情、肢體語言與說話口氣</b>。<br>答題時還會有<b>豐富的人物迷因圖（Meme）</b>等著你！
+      本遊戲共有 <b>15 個情境題</b>，請細心觀察對方的<b>表情、肢體語言與說話口氣</b>。<br>遊戲結束後會根據你的準確率給予<b>偵探等級評級</b>喔！
     </div>
 
     <button class="btn-main" onclick="startGame()">🚀 開始挑戰</button>
@@ -245,53 +222,6 @@
 </div>
 
 <script>
-    // 完全對應你 GitHub images 資料夾內的實際檔名
-    const MEME_DATABASE = {
-        correct: [
-            "./images/correct1.jpg",
-            "./images/correct2.jpg",
-            "./images/correct3.jpg",
-            "./images/correct4.jpg",
-            "./images/correct5.jpg",
-            "./images/correct6.jpg",
-            "./images/correct7.jpg"
-        ],
-        wrong: [
-            "./images/wrong1.jpg",
-            "./images/wrong2.png", // 配合你上傳嘅 PNG 檔
-            "./images/wrong3.jpg",
-            "./images/wrong4.jpg",
-            "./images/wrong5.jpg",
-            "./images/wrong6.jpg",
-            "./images/wrong7.jpg"
-        ],
-        result: {
-            master: "./images/doge.jpg",
-            intern: "./images/success_kid.jpg",
-            novice: "./images/sad_pepe.jpg"
-        }
-    };
-
- / 單局牌組
-let currentCorrectDeck = [];
-let currentWrongDeck = [];
-
-// 洗牌演算法
-function shuffle(array) {
-  let arr = [...array];
-  for (let i = arr.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [arr[i], arr[j]] = [arr[j], arr[i]];
-  }
-  return arr;
-}
-
-// 初始化單局迷因牌組 (15張不重複直接洗牌)
-function initMemeDecks() {
-  currentCorrectDeck = shuffle(rawCorrectMemes);
-  currentWrongDeck = shuffle(rawWrongMemes);
-}
-
 const questions = [
   {
     scenario: "情境 1：小明轉身拿書包時，手肘不小心撞倒了你桌上的水壺，水灑了一地。小明嚇了一跳，連忙說：「對不起！」",
@@ -558,7 +488,6 @@ function startGame() {
   document.getElementById("gameScreen").style.display = "block";
   score = 0;
   currentIndex = 0;
-  initMemeDecks(); // 初始化並打亂單局迷因圖庫
   loadQuestion();
 }
 
@@ -586,31 +515,16 @@ function loadQuestion() {
 
 function selectOption(opt) {
   const feedback = document.getElementById("feedbackBox");
-  let memeImgUrl = "";
-
+  
   if (opt.correct) {
     score += 1;
     document.getElementById("scoreText").innerText = score;
     feedback.className = "feedback-box correct";
-    
-    // 如果牌庫空了（極少發生），重新補充洗牌
-    if (currentCorrectDeck.length === 0) currentCorrectDeck = shuffle(rawCorrectMemes);
-    memeImgUrl = currentCorrectDeck.pop();
   } else {
     feedback.className = "feedback-box wrong";
-    
-    // 如果牌庫空了，重新補充洗牌
-    if (currentWrongDeck.length === 0) currentWrongDeck = shuffle(rawWrongMemes);
-    memeImgUrl = currentWrongDeck.pop();
   }
 
-  feedback.innerHTML = `
-    <div class="meme-container">
-      <img src="${memeImgUrl}" class="meme-img" alt="Meme" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500';">
-    </div>
-    <div>${opt.explanation}</div>
-    <div class="compare-text">${opt.compare}</div>
-  `;
+  feedback.innerHTML = `<div>${opt.explanation}</div><div class="compare-text">${opt.compare}</div>`;
   feedback.style.display = "block";
   
   const btns = document.querySelectorAll(".btn-option");
@@ -635,34 +549,27 @@ function showFinalResult() {
   let title = "";
   let badge = "";
   let desc = "";
-  let finalMeme = "";
 
   if (score >= 13) {
     badge = "🕵️‍♂️";
     title = "社交偵探大師";
     desc = "太厲害了！你擁有極敏銳的觀察力，能精準分辨對方的微表情、眼神與背後真實的意圖！";
-    finalMeme = resultMemes.master;
   } else if (score >= 8) {
     badge = "🔍";
     title = "實習偵探";
     desc = "做得不錯！你已經掌握了一半以上的判斷力。有時候我們容易誤會別人的動機，下次記得多觀察對方『事後有沒有道歉』或『有沒有嘲笑』喔！";
-    finalMeme = resultMemes.intern;
   } else {
     badge = "🛡️";
     title = "警覺小偵探";
     desc = "你的警覺性很高！但有時候容易把對方的『無心之失/意外』過度解讀為『故意攻擊』。當你感到生氣時，試著先讓情緒溫度計降溫，再觀察對方的眼神吧！";
-    finalMeme = resultMemes.beginner;
   }
 
   document.getElementById("gameArea").innerHTML = `
     <div style="text-align:center; padding: 10px 0;">
       <div style="font-size: 20px; font-weight: bold; color: #555;">你的總得分：${score} / 15</div>
       <div class="score-badge">${badge}</div>
-      <h3 style="color:#007aff; font-size:26px; margin: 5px 0;">稱號：${title}</h3>
-      <div class="meme-container">
-        <img src="${finalMeme}" class="result-meme" alt="Final Meme">
-      </div>
-      <p style="color:#3a3a3c; font-size:18px; line-height:1.8; text-align: left; background: #f8f9fa; padding: 20px; border-radius: 16px; margin: 15px 0;">
+      <h3 style="color:#007aff; font-size:26px; margin: 10px 0;">稱號：${title}</h3>
+      <p style="color:#3a3a3c; font-size:18px; line-height:1.8; text-align: left; background: #f8f9fa; padding: 20px; border-radius: 16px; margin: 20px 0;">
         ${desc}
       </p>
       <button class="btn-main" onclick="location.reload()">重新挑戰 ↺</button>
