@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>校園偵探：意外還是惡意？</title>
+<style>
+  body {
+    font-family: "PingFang TC", "Microsoft JhengHei", sans-serif;
+    background-color: #f0f2f5;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+  }
+  .card {
+    background: white;
+    width: 100%;
+    max-width: 600px;
+    border-radius: 20px;
+    padding: 25px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+  }
+  .title {
+    text-align: center;
+    color: #1d1d1f;
+    font-size: 22px;
+    margin-bottom: 5px;
+  }
+  .subtitle {
+    text-align: center;
+    color: #6e6e73;
+    font-size: 14px;
+    margin-bottom: 20px;
+  }
+  .progress-info {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    color: #8e8e93;
+    margin-bottom: 6px;
+  }
+  .progress {
+    background: #e5e5ea;
+    height: 8px;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 20px;
+  }
+  .progress-bar {
+    background: #34c759;
+    height: 100%;
+    width: 0%;
+    transition: width 0.3s;
+  }
+  .scenario-box {
+    background: #f8f9fa;
+    border-left: 5px solid #007aff;
+    padding: 15px;
+    border-radius: 8px;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #2c3e50;
+    margin-bottom: 20px;
+  }
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .btn-option {
+    background: #ffffff;
+    border: 2px solid #e5e5ea;
+    border-radius: 12px;
+    padding: 14px 16px;
+    font-size: 15px;
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: #1c1c1e;
+  }
+  .btn-option:hover {
+    border-color: #007aff;
+    background: #f0f8ff;
+  }
+  .btn-option.disabled {
+    cursor: default;
+    opacity: 0.7;
+  }
+  .feedback-box {
+    margin-top: 20px;
+    padding: 15px;
+    border-radius: 12px;
+    display: none;
+    line-height: 1.5;
+  }
+  .feedback-box.correct {
+    background: #e4f9ec;
+    border: 1px solid #34c759;
+    color: #137333;
+  }
+  .feedback-box.wrong {
+    background: #fde8e8;
+    border: 1px solid #ff3b30;
+    color: #c5221f;
+  }
+  .btn-next {
+    margin-top: 20px;
+    width: 100%;
+    background: #007aff;
+    color: white;
+    border: none;
+    padding: 14px;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    display: none;
+  }
+  .btn-next:hover {
+    background: #0056b3;
+  }
+</style>
+</head>
+<body>
+
+<div class="card">
+  <div class="title">🕵️‍♂️ 校園偵探：猜猜別人在想什麼？</div>
+  <div class="subtitle">學習區分「意外／無心之失」與「惡意行為」</div>
+  
+  <div class="progress-info">
+    <span>進度</span>
+    <span id="progressText">1 / 15</span>
+  </div>
+  <div class="progress"><div class="progress-bar" id="progressBar"></div></div>
+
+  <div id="gameArea">
+    <div class="scenario-box" id="scenarioText">載入中...</div>
+    <div style="font-weight: bold; margin-bottom: 10px; color: #555;">猜猜看，對方當時在大腦裡想什麼？</div>
+    <div class="options" id="optionsContainer"></div>
+    <div class="feedback-box" id="feedbackBox"></div>
+    <button class="btn-next" id="nextBtn" onclick="nextQuestion()">確認並前往下一題 ➔</button>
+  </div>
+</div>
+
+<script>
+const questions = [
+  {
+    scenario: "情境 1：小明轉身拿書包時，手肘不小心撞倒了你桌上的水壺，水灑了一地。小明嚇了一跳，連忙說：「對不起！」",
+    options: [
+      { text: "A. 他是故意的，因為他討厭我，想用水弄濕我的課本。", correct: false, explanation: "❌ 猜錯囉！如果他是故意的，他不會嚇一跳，也不會馬上道歉。這是「無心之失/意外」。" },
+      { text: "B. 他只是轉身沒注意到距離，手不小心碰到，他感到很抱歉。", correct: true, explanation: "🎉 答對了！小明當時的眼神是慌張的，並且馬上道歉，這代表他並非有意傷害你。" }
+    ]
+  },
+  {
+    scenario: "情境 2：小華在排隊買小食，他一直看著手機，走動時腳踩到了你的鞋子。他沒有發現，繼續往前走。",
+    options: [
+      { text: "A. 他專注在看手機，眼睛沒有看路，所以根本不知道自己踩到別人。", correct: true, explanation: "🎉 答對了！這屬於「缺乏注意力的無心之失」。雖然他沒道歉讓人不高興，但他並不是特地來踩你的。" },
+      { text: "B. 他故意踩我，踩完還假裝沒事不道歉，太可惡了！", correct: false, explanation: "❌ 猜錯囉！他的眼神全程停留在手機上，這代表他的注意力在手機而非你身上，這不是惡意攻擊。" }
+    ]
+  },
+  {
+    scenario: "情境 3：小強走過你的座位時，突然對著你大笑，並伸手把你桌上的筆盒用力推到地上，然後跑開。",
+    options: [
+      { text: "A. 他只是不小心絆到腳，順手扶了一下桌子才弄掉筆盒。", correct: false, explanation: "❌ 猜錯囉！觀察肢體語言：他是故意笑著伸手「推」，並且直接跑開，這是明確的「惡意行為」。" },
+      { text: "B. 他是故意的，想透過捉弄我來引起注意或取樂。", correct: true, explanation: "🎉 答對了！有明確的攻擊動作（伸手推）與嘲笑表情，這屬於「故意行為」，我們需要尋求老師協助。" }
+    ]
+  },
+  {
+    scenario: "情境 4：小美在美術課拿走了桌上的紅色彩筆。你跟她說那是你的，她驚訝地說：「啊！對不起，我以為這是公共的彩筆！」並立刻還給你。",
+    options: [
+      { text: "A. 她是誤會了物品的歸屬，以為可以自由使用，並沒有想偷東西。", correct: true, explanation: "🎉 答對了！同理對方的想法：當她知道真相後立刻歸還並道歉，說明這只是「誤會與無心之失」。" },
+      { text: "B. 她想偷我的筆，被我抓包了才假裝不知道。", correct: false, explanation: "❌ 猜錯囉！如果她是想偷，被發現時會生氣抗拒，而不是驚訝並立刻歸還。" }
+    ]
+  },
+  {
+    scenario: "情境 5：體育課打籃球時，同學傳球太用力，籃球直接砸中了你的背部。他連忙跑過來問：「你還好嗎？我傳太大力了！」",
+    options: [
+      { text: "A. 他控制不好傳球的力量與方向，這是一場運動中的意外。", correct: true, explanation: "🎉 答對了！運動中常有控球失誤，他事後關心你的狀況，證明他是無心之失。" },
+      { text: "B. 他是用球砸我來洩憤，根本是砸人不是傳球。", correct: false, explanation: "❌ 猜錯囉！如果他是故意砸人，不會跑過來關心你是否受傷。" }
+    ]
+  },
+  {
+    scenario: "情境 6：分組討論時，組長選了另一個同學的想法，沒有採用你的。你發現他看著你的提案，搖了搖頭。",
+    options: [
+      { text: "A. 他針對我，討厭我這個人，所以故意不聽我的話。", correct: false, explanation: "❌ 猜錯囉！否定一個「想法」不代表討厭你這個「人」，這在討論中很常見。" },
+      { text: "B. 他只是覺得另一個方案更適合這次任務，並不是在攻擊我。", correct: true, explanation: "🎉 答對了！區分「對事還是對人」，對方只是選擇方案，並非惡意排擠。" }
+    ]
+  },
+  {
+    scenario: "情境 7：在狹窄的走廊上，同學跑得很快，擦撞到了你的肩膀，讓你差點摔倒。他頭也不回地大喊：「借過！」並繼續往前跑。",
+    options: [
+      { text: "A. 他急著趕去某個地方，因為跑太快加上走廊窄而撞到，是魯莽的無心之失。", correct: true, explanation: "🎉 答對了！雖然他的行為很衝動、沒禮貌，但他並不是「為了撞你」而出門跑動的。" },
+      { text: "B. 他是專門跑過來撞我肩膀的，他想跟我打架。", correct: false, explanation: "❌ 猜錯囉！他大喊「借過」代表他的目標是趕路，屬於缺乏安全意識的無心碰撞。" }
+    ]
+  },
+  {
+    scenario: "情境 8：同桌同學拿起你的橡皮擦直接使用，沒有事先問過你。當你注視他時，他理所當然地繼續擦。",
+    options: [
+      { text: "A. 他習慣不好，缺乏界線感，以為同桌的物品可以隨便借用。", correct: true, explanation: "🎉 答對了！這屬於缺乏禮貌與邊界感，但不代表他對你有敵意。可以用「我訊息」提醒他。" },
+      { text: "B. 他想挑釁我，故意搶我的東西來試探我的底線。", correct: false, explanation: "❌ 猜錯囉！很多人只是習慣差、沒想太多，不需要立刻把它升級為「挑釁/惡意」。" }
+    ]
+  },
+  {
+    scenario: "情境 9：午膳時間，同學在聊天時大笑，嘴裡的湯汁不小心噴到了你的桌子上。他尷尬地拿紙巾幫你擦拭。",
+    options: [
+      { text: "A. 他故意把湯噴出來弄髒我的桌子，太噁心了。", correct: false, explanation: "❌ 猜錯囉！如果是故意的，他不會感到「尷尬」，更不會主動拿紙巾幫你擦。" },
+      { text: "B. 他笑得太厲害失控了，這是一個尷尬的身體生理意外。", correct: true, explanation: "🎉 答對了！觀察對方的尷尬表情與補救動作（拿紙巾擦），這是典型的意外。" }
+    ]
+  },
+  {
+    scenario: "情境 10：放學時，你在櫃子拿東西，後面的同學關櫃門時，「砰」的一聲夾到了你的手指。他驚呼並立刻拉開櫃門。",
+    options: [
+      { text: "A. 他沒注意到你的手還留在縫隙裡，是視線盲區造成的意外。", correct: true, explanation: "🎉 答對了！視線盲區常導致夾到手，他立刻拉開門證明他很緊張你的安全。" },
+      { text: "B. 他算準了我放手的時間，故意用門夾我的手。", correct: false, explanation: "❌ 猜錯囉！夾到手非常痛，如果是故意攻擊，他不會驚呼並幫你拉開門。" }
+    ]
+  },
+  {
+    scenario: "情境 11：你在台上回答問題答錯了，底下有幾個同學發出了笑聲。",
+    options: [
+      { text: "A. 他們覺得那個答案很滑稽而下意識發笑，並不是在計畫集體霸凌我。", correct: true, explanation: "🎉 答對了！笑聲往往是對「荒謬答案」的直覺反應，別輕易解讀為對自己的惡意霸凌。" },
+      { text: "B. 他們全班都在針對我、嘲笑我，覺得我是個笨蛋。", correct: false, explanation: "❌ 猜錯囉！過度解讀別人的笑聲會讓自己情緒過度高漲（溫度計飆升），先試著冷靜。" }
+    ]
+  },
+  {
+    scenario: "情境 12：下課時，同學在玩扯線木偶，不小心甩到了你的臉。他嚇得愣住，連聲問：「你有沒有怎樣？」",
+    options: [
+      { text: "A. 他道具操作不當失控，這是遊戲中的無心意外。", correct: true, explanation: "🎉 答對了！遊戲道具失控很常見，對方的愣住與問候表明了他沒有攻擊意圖。" },
+      { text: "B. 他假裝在玩遊戲，實則利用道具揮打我的臉。", correct: false, explanation: "❌ 猜錯囉！觀察表情，嚇得愣住代表事情超出了他的預期，並非蓄意攻擊。" }
+    ]
+  },
+  {
+    scenario: "情境 13：你排隊做實驗時，旁邊的同學一直用身體擠你，把你擠出了隊伍，並插隊站到了你前面。",
+    options: [
+      { text: "A. 他完全不知道後面有人，只是單純隨意站立。", correct: false, explanation: "❌ 猜錯囉！用身體擠人並「插隊」是有明確獲利目的（搶先）的故意行為。" },
+      { text: "B. 他為了搶先做實驗，故意用肢體推擠你，這是不守規則的惡意插隊。", correct: true, explanation: "🎉 答對了！這是有意圖侵犯你權益的行為，需要堅定告訴他：「請遵守秩序排隊」。" }
+    ]
+  },
+  {
+    scenario: "情境 14：你做好的手工模型放在桌上，同學經過時衣角勾到模型，模型掉到地上摔裂了。同學緊張地蹲下來幫你撿。",
+    options: [
+      { text: "A. 他的衣服不小心勾到，屬於空間感知不良造成的意外事故。", correct: true, explanation: "🎉 答對了！衣角勾到屬於無意的物理碰撞，對方蹲下幫忙撿證明他心懷愧疚。" },
+      { text: "B. 他嫉妒我做得好看，故意用衣服把模型掃到地上。", correct: false, explanation: "❌ 猜錯囉！如果是嫉妒破壞，他會暗自偷笑或走開，而不是緊張地蹲下幫忙。" }
+    ]
+  },
+  {
+    scenario: "情境 15：組長在分配工作時，分給你的任務是最繁瑣的，而其他人的任務比較簡單。你問他原因，他冷冷地說：「反正你沒事做就多做點。」",
+    options: [
+      { text: "A. 他只是無意間分錯了，心裡其實很公正。", correct: false, explanation: "❌ 猜錯囉！他的口氣不客氣且理由不公正，這是有偏見或不友善的故意行為。" },
+      { text: "B. 他態度不友善且分配不公，這帶有些許針對性或不尊重人的惡意。", correct: true, explanation: "🎉 答對了！遇到這種情況，我們可以用「我訊息」提出合理質疑或向老師反映。" }
+    ]
+  }
+];
+
+let currentIndex = 0;
+
+function loadQuestion() {
+  const q = questions[currentIndex];
+  document.getElementById("scenarioText").innerText = q.scenario;
+  document.getElementById("progressText").innerText = (currentIndex + 1) + " / " + questions.length;
+  document.getElementById("progressBar").style.width = ((currentIndex + 1) / questions.length * 100) + "%";
+  
+  const optionsDiv = document.getElementById("optionsContainer");
+  optionsDiv.innerHTML = "";
+  
+  document.getElementById("feedbackBox").style.display = "none";
+  document.getElementById("nextBtn").style.display = "none";
+
+  q.options.forEach((opt) => {
+    const btn = document.createElement("button");
+    btn.className = "btn-option";
+    btn.innerText = opt.text;
+    btn.onclick = () => selectOption(opt);
+    optionsDiv.appendChild(btn);
+  });
+}
+
+function selectOption(opt) {
+  const feedback = document.getElementById("feedbackBox");
+  feedback.innerText = opt.explanation;
+  feedback.className = "feedback-box " + (opt.correct ? "correct" : "wrong");
+  feedback.style.display = "block";
+  
+  // 鎖定按鈕，防止重複點擊
+  const btns = document.querySelectorAll(".btn-option");
+  btns.forEach(b => {
+    b.classList.add("disabled");
+    b.style.pointerEvents = "none";
+  });
+  
+  // 顯示下一頁按鈕
+  document.getElementById("nextBtn").style.display = "block";
+}
+
+function nextQuestion() {
+  currentIndex++;
+  if (currentIndex < questions.length) {
+    loadQuestion();
+  } else {
+    document.getElementById("gameArea").innerHTML = `
+      <div style="text-align:center; padding: 20px;">
+        <h3 style="color:#34c759; font-size:24px;">🎉 全數完成！你成為了「社交偵探大師」！</h3>
+        <p style="color:#555; line-height:1.6;">你順利完成了全部 15 個校園情境挑戰！<br>記住：遇到衝突時，先冷靜觀察對方的<b>表情、眼神與事後反應</b>，區分「意外」與「故意」，大腦就不容易失控爆發喔！</p>
+        <button class="btn-next" style="display:block; margin-top:20px;" onclick="location.reload()">重新挑戰 ↺</button>
+      </div>
+    `;
+  }
+}
+
+loadQuestion();
+</script>
+
+</body>
+</html>
